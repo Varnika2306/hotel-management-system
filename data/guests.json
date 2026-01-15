@@ -1,0 +1,42 @@
+[
+  {
+    "guest_id": "G0001",
+    "name": "John Doe",
+    "email": "john@example.com",
+    "phone": "+1234567890",
+    "id_proof": "DL123",
+    "loyalty_tier": "Bronze",
+    "loyalty_points": 0,
+    "booking_history": [],
+    "preferences": {},
+    "created_at": "2026-01-07T13:10:20.644966"
+  },
+  {
+    "guest_id": "G0002",
+    "name": "Jane Smith",
+    "email": "jane@example.com",
+    "phone": "+1234567891",
+    "id_proof": "PP456",
+    "loyalty_tier": "Bronze",
+    "loyalty_points": 0,
+    "booking_history": [],
+    "preferences": {},
+    "created_at": "2026-01-07T13:10:20.645005"
+  },
+  {
+    "guest_id": "G0003",
+    "name": "Bob Wilson",
+    "email": "bob@example.com",
+    "phone": "+1234567892",
+    "id_proof": "ID789",
+    "loyalty_tier": "Bronze",
+    "loyalty_points": 1156,
+    "booking_history": [
+      "B00001",
+      "BK00001",
+      "BK00002"
+    ],
+    "preferences": {},
+    "created_at": "2026-01-07T13:10:20.645013"
+  }
+]

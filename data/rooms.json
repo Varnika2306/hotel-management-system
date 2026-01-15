@@ -1,0 +1,164 @@
+[
+  {
+    "room_id": "R101",
+    "room_number": 101,
+    "room_type": "Standard",
+    "floor": 1,
+    "base_price": 100.0,
+    "features": [],
+    "status": "Available"
+  },
+  {
+    "room_id": "R102",
+    "room_number": 102,
+    "room_type": "Standard",
+    "floor": 1,
+    "base_price": 100.0,
+    "features": [],
+    "status": "Available"
+  },
+  {
+    "room_id": "R103",
+    "room_number": 103,
+    "room_type": "Standard",
+    "floor": 1,
+    "base_price": 100.0,
+    "features": [],
+    "status": "Available"
+  },
+  {
+    "room_id": "R104",
+    "room_number": 104,
+    "room_type": "Standard",
+    "floor": 2,
+    "base_price": 100.0,
+    "features": [],
+    "status": "Available"
+  },
+  {
+    "room_id": "R105",
+    "room_number": 105,
+    "room_type": "Standard",
+    "floor": 2,
+    "base_price": 100.0,
+    "features": [],
+    "status": "Available"
+  },
+  {
+    "room_id": "R106",
+    "room_number": 106,
+    "room_type": "Standard",
+    "floor": 2,
+    "base_price": 100.0,
+    "features": [],
+    "status": "Available"
+  },
+  {
+    "room_id": "R107",
+    "room_number": 107,
+    "room_type": "Standard",
+    "floor": 3,
+    "base_price": 100.0,
+    "features": [],
+    "status": "Available"
+  },
+  {
+    "room_id": "R108",
+    "room_number": 108,
+    "room_type": "Standard",
+    "floor": 3,
+    "base_price": 100.0,
+    "features": [],
+    "status": "Available"
+  },
+  {
+    "room_id": "R109",
+    "room_number": 109,
+    "room_type": "Standard",
+    "floor": 3,
+    "base_price": 100.0,
+    "features": [],
+    "status": "Available"
+  },
+  {
+    "room_id": "R110",
+    "room_number": 110,
+    "room_type": "Deluxe",
+    "floor": 1,
+    "base_price": 150.0,
+    "features": [],
+    "status": "Available"
+  },
+  {
+    "room_id": "R111",
+    "room_number": 111,
+    "room_type": "Deluxe",
+    "floor": 1,
+    "base_price": 150.0,
+    "features": [],
+    "status": "Available"
+  },
+  {
+    "room_id": "R112",
+    "room_number": 112,
+    "room_type": "Deluxe",
+    "floor": 2,
+    "base_price": 150.0,
+    "features": [],
+    "status": "Available"
+  },
+  {
+    "room_id": "R113",
+    "room_number": 113,
+    "room_type": "Deluxe",
+    "floor": 2,
+    "base_price": 150.0,
+    "features": [],
+    "status": "Available"
+  },
+  {
+    "room_id": "R114",
+    "room_number": 114,
+    "room_type": "Deluxe",
+    "floor": 3,
+    "base_price": 150.0,
+    "features": [],
+    "status": "Available"
+  },
+  {
+    "room_id": "R115",
+    "room_number": 115,
+    "room_type": "Deluxe",
+    "floor": 3,
+    "base_price": 150.0,
+    "features": [],
+    "status": "Available"
+  },
+  {
+    "room_id": "R116",
+    "room_number": 116,
+    "room_type": "Suite",
+    "floor": 3,
+    "base_price": 250.0,
+    "features": [],
+    "status": "Available"
+  },
+  {
+    "room_id": "R117",
+    "room_number": 117,
+    "room_type": "Suite",
+    "floor": 4,
+    "base_price": 250.0,
+    "features": [],
+    "status": "Available"
+  },
+  {
+    "room_id": "R118",
+    "room_number": 118,
+    "room_type": "Penthouse",
+    "floor": 5,
+    "base_price": 500.0,
+    "features": [],
+    "status": "Available"
+  }
+]
