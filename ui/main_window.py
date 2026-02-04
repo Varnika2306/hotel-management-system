@@ -35,7 +35,6 @@ class ModernButton(QPushButton):
             }}
         """)
         
-        # Add shadow effect
         shadow = QGraphicsDropShadowEffect()
         shadow.setBlurRadius(15)
         shadow.setColor(QColor(0, 0, 0, 80))
@@ -43,32 +42,29 @@ class ModernButton(QPushButton):
         self.setGraphicsEffect(shadow)
     
     def lighten_color(self, hex_color):
-        """Lighten a hex color"""
         color = QColor(hex_color)
         h, s, l, a = color.getHsl()
         return QColor.fromHsl(h, s, min(255, l + 20), a).name()
     
     def darken_color(self, hex_color):
-        """Darken a hex color"""
         color = QColor(hex_color)
         h, s, l, a = color.getHsl()
         return QColor.fromHsl(h, s, max(0, l - 20), a).name()
 
 class GlassCard(QFrame):
-    """Glassmorphism card widget"""
+    """Glassmorphism card widget - DARK WITH TRANSPARENCY"""
     def __init__(self, parent=None):
         super().__init__(parent)
         self.setStyleSheet("""
             QFrame {
-                background-color: rgba(255, 255, 255, 0.9);
+                background-color: rgba(255, 255, 255, 0.1);
                 border-radius: 15px;
-                border: 1px solid rgba(255, 255, 255, 0.3);
+                border: 1px solid rgba(255, 255, 255, 0.2);
             }
         """)
-        # Add shadow
         shadow = QGraphicsDropShadowEffect()
         shadow.setBlurRadius(20)
-        shadow.setColor(QColor(0, 0, 0, 40))
+        shadow.setColor(QColor(0, 0, 0, 100))
         shadow.setOffset(0, 5)
         self.setGraphicsEffect(shadow)
 
@@ -79,29 +75,24 @@ class StatCard(QFrame):
         self.setFixedSize(220, 140)
         self.color = color
         
-        # Setup UI
         layout = QVBoxLayout()
         self.setLayout(layout)
         
-        # Icon
         icon_label = QLabel(icon)
-        icon_label.setStyleSheet(f"font-size: 40px; color: {color};")
+        icon_label.setStyleSheet(f"font-size: 40px; color: white;")
         icon_label.setAlignment(Qt.AlignCenter)
         layout.addWidget(icon_label)
         
-        # Value
         self.value_label = QLabel(str(value))
-        self.value_label.setStyleSheet(f"font-size: 32px; font-weight: bold; color: {color};")
+        self.value_label.setStyleSheet(f"font-size: 32px; font-weight: bold; color: white;")
         self.value_label.setAlignment(Qt.AlignCenter)
         layout.addWidget(self.value_label)
         
-        # Title
         title_label = QLabel(title)
-        title_label.setStyleSheet("font-size: 14px; color: #666;")
+        title_label.setStyleSheet("font-size: 14px; color: white;")
         title_label.setAlignment(Qt.AlignCenter)
         layout.addWidget(title_label)
         
-        # Style
         self.setStyleSheet(f"""
             QFrame {{
                 background: qlineargradient(x1:0, y1:0, x2:1, y2:1,
@@ -111,14 +102,12 @@ class StatCard(QFrame):
             }}
         """)
         
-        # Shadow
         shadow = QGraphicsDropShadowEffect()
         shadow.setBlurRadius(20)
         shadow.setColor(QColor(0, 0, 0, 60))
         shadow.setOffset(0, 8)
         self.setGraphicsEffect(shadow)
         
-        # Animation
         self.animation = QPropertyAnimation(self, b"geometry")
         self.animation.setDuration(300)
         self.animation.setEasingCurve(QEasingCurve.OutCubic)
@@ -129,11 +118,9 @@ class StatCard(QFrame):
         return QColor.fromHsl(h, max(0, s - 30), min(255, l + 30), a).name()
     
     def update_value(self, new_value):
-        """Animate value change"""
         self.value_label.setText(str(new_value))
     
     def enterEvent(self, event):
-        """Hover effect"""
         self.setCursor(Qt.PointingHandCursor)
         current = self.geometry()
         self.animation.setStartValue(current)
@@ -141,7 +128,6 @@ class StatCard(QFrame):
         self.animation.start()
     
     def leaveEvent(self, event):
-        """Hover off effect"""
         self.setCursor(Qt.ArrowCursor)
         current = self.geometry()
         self.animation.setStartValue(current)
@@ -154,18 +140,25 @@ class MainWindow(QMainWindow):
         self.setWindowTitle("🏨 Luxe Hotel - Smart Management System")
         self.setGeometry(100, 100, 1600, 1000)
         
-        # Set gradient background
+        # DARK PURPLE GRADIENT BACKGROUND
         self.setStyleSheet("""
             QMainWindow {
-                background: qlineargradient(x1:0, y1:0, x2:0, y2:1,
-                    stop:0 #667eea, stop:1 #764ba2);
+                background: qlineargradient(x1:0, y1:0, x2:1, y2:1,
+                    stop:0 #1a1a2e, stop:0.5 #16213e, stop:1 #0f3460);
+            }
+            QWidget {
+                color: white;
+            }
+            QScrollArea {
+                border: none;
+                background: transparent;
             }
             QTabWidget::pane {
                 border: none;
                 background-color: transparent;
             }
             QTabBar::tab {
-                background-color: rgba(255, 255, 255, 0.2);
+                background-color: rgba(255, 255, 255, 0.1);
                 color: white;
                 padding: 12px 24px;
                 margin: 2px;
@@ -174,11 +167,15 @@ class MainWindow(QMainWindow):
                 font-weight: bold;
             }
             QTabBar::tab:selected {
-                background-color: rgba(255, 255, 255, 0.9);
-                color: #667eea;
+                background: qlineargradient(x1:0, y1:0, x2:1, y2:0,
+                    stop:0 #667eea, stop:1 #764ba2);
+                color: white;
             }
             QTabBar::tab:hover {
-                background-color: rgba(255, 255, 255, 0.3);
+                background-color: rgba(102, 126, 234, 0.3);
+            }
+            QLabel {
+                color: white;
             }
         """)
         
@@ -207,10 +204,9 @@ class MainWindow(QMainWindow):
     
     def setup_animations(self):
         """Setup continuous animations"""
-        # Pulse animation for title
         self.title_animation = QPropertyAnimation(self.title_label, b"geometry")
         self.title_animation.setDuration(2000)
-        self.title_animation.setLoopCount(-1)  # Infinite loop
+        self.title_animation.setLoopCount(-1)
         self.title_animation.setEasingCurve(QEasingCurve.InOutSine)
         
     def setup_ui(self):
@@ -222,6 +218,7 @@ class MainWindow(QMainWindow):
         self.setCentralWidget(scroll)
         
         central_widget = QWidget()
+        central_widget.setStyleSheet("background: transparent;")
         scroll.setWidget(central_widget)
         
         main_layout = QVBoxLayout()
@@ -231,6 +228,7 @@ class MainWindow(QMainWindow):
         
         # Animated Title
         title_container = QWidget()
+        title_container.setStyleSheet("background: transparent;")
         title_layout = QVBoxLayout()
         title_container.setLayout(title_layout)
         
@@ -241,10 +239,11 @@ class MainWindow(QMainWindow):
             color: white;
             padding: 20px;
             background: qlineargradient(x1:0, y1:0, x2:1, y2:0,
-                stop:0 rgba(255, 255, 255, 0.1), 
-                stop:0.5 rgba(255, 255, 255, 0.2), 
-                stop:1 rgba(255, 255, 255, 0.1));
+                stop:0 rgba(102, 126, 234, 0.3), 
+                stop:0.5 rgba(118, 75, 162, 0.3), 
+                stop:1 rgba(102, 126, 234, 0.3));
             border-radius: 15px;
+            border: 2px solid rgba(255, 255, 255, 0.2);
         """)
         self.title_label.setAlignment(Qt.AlignCenter)
         title_layout.addWidget(self.title_label)
@@ -254,6 +253,7 @@ class MainWindow(QMainWindow):
             font-size: 16px;
             color: rgba(255, 255, 255, 0.9);
             padding: 10px;
+            background: transparent;
         """)
         subtitle.setAlignment(Qt.AlignCenter)
         title_layout.addWidget(subtitle)
@@ -266,7 +266,7 @@ class MainWindow(QMainWindow):
         stats_card.setLayout(stats_layout)
         
         stats_title = QLabel("📊 LIVE DASHBOARD")
-        stats_title.setStyleSheet("font-size: 20px; font-weight: bold; color: #667eea; padding: 10px;")
+        stats_title.setStyleSheet("font-size: 20px; font-weight: bold; color: white; padding: 10px;")
         stats_layout.addWidget(stats_title)
         
         # Stats grid
@@ -308,6 +308,7 @@ class MainWindow(QMainWindow):
     def create_modern_booking_tab(self):
         """Create modern booking tab with animations"""
         widget = QWidget()
+        widget.setStyleSheet("background: transparent;")
         layout = QVBoxLayout()
         layout.setSpacing(20)
         widget.setLayout(layout)
@@ -319,8 +320,9 @@ class MainWindow(QMainWindow):
             font-weight: bold;
             color: white;
             padding: 15px;
-            background: rgba(255, 255, 255, 0.2);
+            background: rgba(102, 126, 234, 0.2);
             border-radius: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
         """)
         layout.addWidget(header)
         
@@ -334,7 +336,7 @@ class MainWindow(QMainWindow):
         form_grid.setSpacing(15)
         
         # Styled labels
-        label_style = "font-size: 14px; font-weight: bold; color: #667eea;"
+        label_style = "font-size: 14px; font-weight: bold; color: white; background: transparent;"
         
         # Guest selection with modern combo
         guest_label = QLabel("👤 Select Guest:")
@@ -345,13 +347,23 @@ class MainWindow(QMainWindow):
         self.guest_combo.setStyleSheet("""
             QComboBox {
                 padding: 10px;
-                border: 2px solid #667eea;
+                border: 2px solid rgba(102, 126, 234, 0.5);
                 border-radius: 8px;
                 font-size: 13px;
-                background-color: white;
+                background-color: rgba(255, 255, 255, 0.1);
+                color: white;
             }
             QComboBox:hover {
                 border: 2px solid #764ba2;
+                background-color: rgba(255, 255, 255, 0.15);
+            }
+            QComboBox::drop-down {
+                border: none;
+            }
+            QComboBox QAbstractItemView {
+                background-color: #1a1a2e;
+                color: white;
+                selection-background-color: #667eea;
             }
         """)
         self.update_guest_combo()
@@ -372,10 +384,16 @@ class MainWindow(QMainWindow):
         self.room_type_combo.setStyleSheet("""
             QComboBox {
                 padding: 10px;
-                border: 2px solid #667eea;
+                border: 2px solid rgba(102, 126, 234, 0.5);
                 border-radius: 8px;
                 font-size: 13px;
-                background-color: white;
+                background-color: rgba(255, 255, 255, 0.1);
+                color: white;
+            }
+            QComboBox QAbstractItemView {
+                background-color: #1a1a2e;
+                color: white;
+                selection-background-color: #667eea;
             }
         """)
         self.room_type_combo.currentTextChanged.connect(self.update_available_rooms)
@@ -392,10 +410,11 @@ class MainWindow(QMainWindow):
         self.checkin_date.setStyleSheet("""
             QDateEdit {
                 padding: 10px;
-                border: 2px solid #667eea;
+                border: 2px solid rgba(102, 126, 234, 0.5);
                 border-radius: 8px;
                 font-size: 13px;
-                background-color: white;
+                background-color: rgba(255, 255, 255, 0.1);
+                color: white;
             }
         """)
         self.checkin_date.dateChanged.connect(self.update_available_rooms)
@@ -411,10 +430,11 @@ class MainWindow(QMainWindow):
         self.checkout_date.setStyleSheet("""
             QDateEdit {
                 padding: 10px;
-                border: 2px solid #667eea;
+                border: 2px solid rgba(102, 126, 234, 0.5);
                 border-radius: 8px;
                 font-size: 13px;
-                background-color: white;
+                background-color: rgba(255, 255, 255, 0.1);
+                color: white;
             }
         """)
         self.checkout_date.dateChanged.connect(self.update_available_rooms)
@@ -424,29 +444,31 @@ class MainWindow(QMainWindow):
         
         # Available rooms list
         rooms_label = QLabel("🏨 Available Rooms:")
-        rooms_label.setStyleSheet("font-size: 16px; font-weight: bold; color: #667eea; margin-top: 20px;")
+        rooms_label.setStyleSheet("font-size: 16px; font-weight: bold; color: white; margin-top: 20px; background: transparent;")
         card_layout.addWidget(rooms_label)
         
         self.available_rooms_list = QListWidget()
         self.available_rooms_list.setStyleSheet("""
             QListWidget {
-                border: 2px solid #667eea;
+                border: 2px solid rgba(102, 126, 234, 0.5);
                 border-radius: 8px;
                 padding: 10px;
                 font-size: 13px;
-                background-color: white;
+                background-color: rgba(255, 255, 255, 0.05);
+                color: white;
             }
             QListWidget::item {
                 padding: 12px;
                 border-radius: 5px;
                 margin: 3px;
+                background-color: rgba(255, 255, 255, 0.05);
             }
             QListWidget::item:selected {
                 background-color: #667eea;
                 color: white;
             }
             QListWidget::item:hover {
-                background-color: rgba(102, 126, 234, 0.2);
+                background-color: rgba(102, 126, 234, 0.3);
             }
         """)
         self.available_rooms_list.itemClicked.connect(self.calculate_price)
@@ -459,7 +481,7 @@ class MainWindow(QMainWindow):
             font-weight: bold;
             color: #43e97b;
             padding: 20px;
-            background: rgba(67, 233, 123, 0.1);
+            background: rgba(67, 233, 123, 0.2);
             border-radius: 10px;
             border: 2px solid #43e97b;
         """)
@@ -480,6 +502,7 @@ class MainWindow(QMainWindow):
     def create_modern_manage_tab(self):
         """Create modern manage bookings tab"""
         widget = QWidget()
+        widget.setStyleSheet("background: transparent;")
         layout = QVBoxLayout()
         layout.setSpacing(20)
         widget.setLayout(layout)
@@ -492,6 +515,7 @@ class MainWindow(QMainWindow):
             font-weight: bold;
             color: white;
             padding: 15px;
+            background: transparent;
         """)
         header_layout.addWidget(header)
         
@@ -513,13 +537,14 @@ class MainWindow(QMainWindow):
         ])
         self.bookings_table.setStyleSheet("""
             QTableWidget {
-                background-color: white;
+                background-color: rgba(255, 255, 255, 0.05);
                 border: none;
                 border-radius: 10px;
-                gridline-color: #e0e0e0;
+                gridline-color: rgba(255, 255, 255, 0.1);
+                color: white;
             }
             QHeaderView::section {
-                background-color: #667eea;
+                background-color: rgba(102, 126, 234, 0.8);
                 color: white;
                 padding: 12px;
                 border: none;
@@ -528,9 +553,10 @@ class MainWindow(QMainWindow):
             }
             QTableWidget::item {
                 padding: 10px;
+                color: white;
             }
             QTableWidget::item:selected {
-                background-color: rgba(102, 126, 234, 0.3);
+                background-color: rgba(102, 126, 234, 0.5);
             }
         """)
         self.bookings_table.horizontalHeader().setStretchLastSection(True)
@@ -546,6 +572,7 @@ class MainWindow(QMainWindow):
     def create_modern_guests_tab(self):
         """Create modern guests tab"""
         widget = QWidget()
+        widget.setStyleSheet("background: transparent;")
         layout = QVBoxLayout()
         layout.setSpacing(20)
         widget.setLayout(layout)
@@ -557,6 +584,7 @@ class MainWindow(QMainWindow):
             font-weight: bold;
             color: white;
             padding: 15px;
+            background: transparent;
         """)
         layout.addWidget(header)
         
@@ -572,13 +600,14 @@ class MainWindow(QMainWindow):
         ])
         self.guests_table.setStyleSheet("""
             QTableWidget {
-                background-color: white;
+                background-color: rgba(255, 255, 255, 0.05);
                 border: none;
                 border-radius: 10px;
-                gridline-color: #e0e0e0;
+                gridline-color: rgba(255, 255, 255, 0.1);
+                color: white;
             }
             QHeaderView::section {
-                background-color: #f093fb;
+                background-color: rgba(240, 147, 251, 0.8);
                 color: white;
                 padding: 12px;
                 border: none;
@@ -586,6 +615,7 @@ class MainWindow(QMainWindow):
             }
             QTableWidget::item {
                 padding: 10px;
+                color: white;
             }
         """)
         
@@ -599,6 +629,7 @@ class MainWindow(QMainWindow):
     def create_modern_rooms_tab(self):
         """Create modern rooms tab"""
         widget = QWidget()
+        widget.setStyleSheet("background: transparent;")
         layout = QVBoxLayout()
         layout.setSpacing(20)
         widget.setLayout(layout)
@@ -610,6 +641,7 @@ class MainWindow(QMainWindow):
             font-weight: bold;
             color: white;
             padding: 15px;
+            background: transparent;
         """)
         layout.addWidget(header)
         
@@ -625,13 +657,14 @@ class MainWindow(QMainWindow):
         ])
         self.rooms_table.setStyleSheet("""
             QTableWidget {
-                background-color: white;
+                background-color: rgba(255, 255, 255, 0.05);
                 border: none;
                 border-radius: 10px;
-                gridline-color: #e0e0e0;
+                gridline-color: rgba(255, 255, 255, 0.1);
+                color: white;
             }
             QHeaderView::section {
-                background-color: #43e97b;
+                background-color: rgba(67, 233, 123, 0.8);
                 color: white;
                 padding: 12px;
                 border: none;
@@ -639,6 +672,7 @@ class MainWindow(QMainWindow):
             }
             QTableWidget::item {
                 padding: 10px;
+                color: white;
             }
         """)
         
@@ -652,6 +686,7 @@ class MainWindow(QMainWindow):
     def create_modern_analytics_tab(self):
         """Create modern analytics tab"""
         widget = QWidget()
+        widget.setStyleSheet("background: transparent;")
         layout = QVBoxLayout()
         layout.setSpacing(20)
         widget.setLayout(layout)
@@ -663,6 +698,7 @@ class MainWindow(QMainWindow):
             font-weight: bold;
             color: white;
             padding: 15px;
+            background: transparent;
         """)
         layout.addWidget(header)
         
@@ -675,12 +711,30 @@ class MainWindow(QMainWindow):
         self.analytics_start = QDateEdit()
         self.analytics_start.setDate(QDate.currentDate().addMonths(-1))
         self.analytics_start.setCalendarPopup(True)
+        self.analytics_start.setStyleSheet("""
+            QDateEdit {
+                background-color: rgba(255, 255, 255, 0.1);
+                color: white;
+                padding: 8px;
+                border: 2px solid rgba(102, 126, 234, 0.5);
+                border-radius: 6px;
+            }
+        """)
         date_layout.addWidget(self.analytics_start)
         
         date_layout.addWidget(QLabel("To:"))
         self.analytics_end = QDateEdit()
         self.analytics_end.setDate(QDate.currentDate())
         self.analytics_end.setCalendarPopup(True)
+        self.analytics_end.setStyleSheet("""
+            QDateEdit {
+                background-color: rgba(255, 255, 255, 0.1);
+                color: white;
+                padding: 8px;
+                border: 2px solid rgba(102, 126, 234, 0.5);
+                border-radius: 6px;
+            }
+        """)
         date_layout.addWidget(self.analytics_end)
         
         calc_btn = ModernButton("Calculate", "#667eea")
@@ -698,11 +752,12 @@ class MainWindow(QMainWindow):
         self.analytics_text.setReadOnly(True)
         self.analytics_text.setStyleSheet("""
             QTextEdit {
-                background-color: white;
+                background-color: rgba(255, 255, 255, 0.05);
                 border: none;
                 border-radius: 10px;
                 padding: 20px;
                 font-size: 14px;
+                color: white;
             }
         """)
         stats_layout.addWidget(self.analytics_text)
@@ -716,6 +771,7 @@ class MainWindow(QMainWindow):
     def create_game_tab(self):
         """Create fun game tab"""
         widget = QWidget()
+        widget.setStyleSheet("background: transparent;")
         layout = QVBoxLayout()
         layout.setSpacing(20)
         widget.setLayout(layout)
@@ -728,8 +784,9 @@ class MainWindow(QMainWindow):
             color: white;
             padding: 15px;
             background: qlineargradient(x1:0, y1:0, x2:1, y2:0,
-                stop:0 #f093fb, stop:1 #f5576c);
+                stop:0 rgba(240, 147, 251, 0.5), stop:1 rgba(245, 87, 108, 0.5));
             border-radius: 15px;
+            border: 2px solid rgba(255, 255, 255, 0.2);
         """)
         header.setAlignment(Qt.AlignCenter)
         layout.addWidget(header)
@@ -750,9 +807,9 @@ class MainWindow(QMainWindow):
         """)
         instructions.setStyleSheet("""
             font-size: 16px;
-            color: #333;
+            color: white;
             padding: 20px;
-            background-color: rgba(67, 233, 123, 0.1);
+            background-color: rgba(67, 233, 123, 0.2);
             border-radius: 10px;
         """)
         game_layout.addWidget(instructions)
@@ -762,9 +819,9 @@ class MainWindow(QMainWindow):
         self.score_label.setStyleSheet("""
             font-size: 24px;
             font-weight: bold;
-            color: #667eea;
+            color: white;
             padding: 15px;
-            text-align: center;
+            background: transparent;
         """)
         self.score_label.setAlignment(Qt.AlignCenter)
         game_layout.addWidget(self.score_label)
@@ -776,6 +833,7 @@ class MainWindow(QMainWindow):
             font-weight: bold;
             color: #f5576c;
             padding: 20px;
+            background: transparent;
         """)
         self.timer_label.setAlignment(Qt.AlignCenter)
         game_layout.addWidget(self.timer_label)
@@ -797,8 +855,83 @@ class MainWindow(QMainWindow):
         
         return widget
     
+    def create_visualization_tab(self):
+        """Keep the tree visualization tab"""
+        widget = QWidget()
+        widget.setStyleSheet("background: transparent;")
+        layout = QVBoxLayout()
+        widget.setLayout(layout)
+        
+        header = QLabel("🌲 INTERVAL TREE VISUALIZATION")
+        header.setStyleSheet("""
+            font-size: 28px;
+            font-weight: bold;
+            color: white;
+            padding: 15px;
+            background: transparent;
+        """)
+        layout.addWidget(header)
+        
+        card = GlassCard()
+        card_layout = QVBoxLayout()
+        card.setLayout(card_layout)
+        
+        info = QLabel("Select a room to visualize its interval tree structure")
+        info.setStyleSheet("font-size: 14px; padding: 10px; color: white; background: transparent;")
+        card_layout.addWidget(info)
+        
+        room_layout = QHBoxLayout()
+        room_layout.addWidget(QLabel("Select Room:"))
+        
+        self.viz_room_combo = QComboBox()
+        self.viz_room_combo.setStyleSheet("""
+            QComboBox {
+                background-color: rgba(255, 255, 255, 0.1);
+                color: white;
+                padding: 8px;
+                border: 2px solid rgba(102, 126, 234, 0.5);
+                border-radius: 6px;
+            }
+            QComboBox QAbstractItemView {
+                background-color: #1a1a2e;
+                color: white;
+                selection-background-color: #667eea;
+            }
+        """)
+        for room in self.rooms:
+            self.viz_room_combo.addItem(f"Room {room.room_number} ({room.room_type.value})", room.room_id)
+        room_layout.addWidget(self.viz_room_combo)
+        
+        viz_btn = ModernButton("🌲 Visualize", "#4facfe")
+        viz_btn.clicked.connect(self.show_tree_visualization)
+        room_layout.addWidget(viz_btn)
+        
+        room_layout.addStretch()
+        card_layout.addLayout(room_layout)
+        
+        self.tree_stats_text = QTextEdit()
+        self.tree_stats_text.setReadOnly(True)
+        self.tree_stats_text.setMaximumHeight(200)
+        self.tree_stats_text.setStyleSheet("""
+            QTextEdit {
+                background-color: rgba(255, 255, 255, 0.05);
+                border: none;
+                border-radius: 10px;
+                padding: 15px;
+                color: white;
+            }
+        """)
+        card_layout.addWidget(self.tree_stats_text)
+        
+        layout.addWidget(card)
+        layout.addStretch()
+        
+        self.update_tree_stats()
+        
+        return widget
+    
+    # All other methods remain the same...
     def start_game(self):
-        """Start the booking game"""
         self.game_score = 0
         self.game_time = 60
         self.game_btn.setEnabled(False)
@@ -807,7 +940,6 @@ class MainWindow(QMainWindow):
         QMessageBox.information(self, "Game Started!", "Book as many rooms as you can in 60 seconds!\nGo to the Booking tab to make bookings!")
     
     def update_game_timer(self):
-        """Update game timer"""
         self.game_time -= 1
         self.timer_label.setText(f"⏱️ {self.game_time}s")
         
@@ -827,168 +959,173 @@ class MainWindow(QMainWindow):
             self.update_score()
     
     def update_score(self):
-        """Update score display"""
         self.score_label.setText(f"Score: {self.game_score} | High Score: {self.game_high_score}")
     
-    # Include all other methods from the previous version...
-    # (load_data, save_data, create_sample_rooms, etc.)
+    def show_tree_visualization(self):
+        try:
+            from ui.tree_visualization import TreeVisualizationDialog
+            
+            room_id = self.viz_room_combo.currentData()
+            
+            if room_id not in self.booking_service.room_trees:
+                QMessageBox.information(self, "No Data", "No bookings for this room yet!")
+                return
+            
+            tree = self.booking_service.room_trees[room_id]
+            
+            if tree.size == 0:
+                QMessageBox.information(self, "Empty", "This room's tree is empty!")
+                return
+            
+            dialog = TreeVisualizationDialog(tree, room_id, self)
+            dialog.exec_()
+        except Exception as e:
+            QMessageBox.warning(self, "Error", f"Could not visualize tree: {e}")
+    
+    def update_tree_stats(self):
+        total_bookings = len(self.booking_service.get_all_bookings())
+        active_bookings = sum(1 for b in self.booking_service.get_all_bookings() if b.status.value != "Cancelled")
+        num_trees = len(self.booking_service.room_trees)
+        
+        stats = "<h3 style='color: white;'>Interval Tree Statistics</h3>"
+        stats += f"<p style='color: white;'>• <b>Total Bookings:</b> {total_bookings}</p>"
+        stats += f"<p style='color: white;'>• <b>Active Bookings:</b> {active_bookings}</p>"
+        stats += f"<p style='color: white;'>• <b>Active Trees:</b> {num_trees}</p>"
+        stats += f"<p style='color: white;'>• <b>Avg Tree Size:</b> {active_bookings / num_trees if num_trees > 0 else 0:.1f}</p>"
+        
+        self.tree_stats_text.setHtml(stats)
     
     def load_data(self):
-        """Load data from JSON files or create sample data"""
-        data_dir = "data"
-        if not os.path.exists(data_dir):
-            os.makedirs(data_dir)
-        
-        rooms_file = os.path.join(data_dir, "rooms.json")
-        if os.path.exists(rooms_file):
-            try:
-                with open(rooms_file, 'r') as f:
-                    rooms_data = json.load(f)
-                    self.rooms = [Room.from_dict(r) for r in rooms_data]
-            except:
+        try:
+            if os.path.exists('data/rooms.json'):
+                with open('data/rooms.json', 'r') as f:
+                    content = f.read().strip()
+                    if content:
+                        rooms_data = json.loads(content)
+                        self.rooms = [Room.from_dict(r) for r in rooms_data]
+                    else:
+                        self.create_sample_rooms()
+            else:
                 self.create_sample_rooms()
-        else:
+        except:
             self.create_sample_rooms()
         
-        guests_file = os.path.join(data_dir, "guests.json")
-        if os.path.exists(guests_file):
-            try:
-                with open(guests_file, 'r') as f:
-                    guests_data = json.load(f)
-                    self.guests = {g['guest_id']: Guest.from_dict(g) for g in guests_data}
-                    if self.guests:
-                        max_id = max([int(gid[1:]) for gid in self.guests.keys()])
-                        self.guest_counter = max_id + 1
-            except:
+        try:
+            if os.path.exists('data/guests.json'):
+                with open('data/guests.json', 'r') as f:
+                    content = f.read().strip()
+                    if content:
+                        guests_data = json.loads(content)
+                        for g_data in guests_data.values():
+                            guest = Guest.from_dict(g_data)
+                            self.guests[guest.guest_id] = guest
+                            guest_num = int(guest.guest_id.replace('G', ''))
+                            self.guest_counter = max(self.guest_counter, guest_num + 1)
+                    else:
+                        self.create_sample_guests()
+            else:
                 self.create_sample_guests()
-        else:
+        except:
             self.create_sample_guests()
         
-        bookings_file = os.path.join(data_dir, "bookings.json")
-        if os.path.exists(bookings_file):
-            try:
-                with open(bookings_file, 'r') as f:
-                    bookings_data = json.load(f)
-                    self.booking_service.load_bookings(bookings_data)
-            except:
-                pass
+        self.booking_service.load_from_file()
     
     def save_data(self):
-        """Save data to JSON files"""
-        data_dir = "data"
-        if not os.path.exists(data_dir):
-            os.makedirs(data_dir)
+        os.makedirs('data', exist_ok=True)
         
         try:
-            rooms_file = os.path.join(data_dir, "rooms.json")
-            with open(rooms_file, 'w') as f:
-                rooms_data = [r.to_dict() for r in self.rooms]
-                json.dump(rooms_data, f, indent=2)
-        except:
-            pass
+            with open('data/rooms.json', 'w') as f:
+                json.dump([r.to_dict() for r in self.rooms], f, indent=2)
+        except Exception as e:
+            print(f"Error saving rooms: {e}")
         
         try:
-            guests_file = os.path.join(data_dir, "guests.json")
-            with open(guests_file, 'w') as f:
-                guests_data = [g.to_dict() for g in self.guests.values()]
-                json.dump(guests_data, f, indent=2)
-        except:
-            pass
+            with open('data/guests.json', 'w') as f:
+                json.dump({gid: g.to_dict() for gid, g in self.guests.items()}, f, indent=2)
+        except Exception as e:
+            print(f"Error saving guests: {e}")
         
-        try:
-            bookings_file = os.path.join(data_dir, "bookings.json")
-            with open(bookings_file, 'w') as f:
-                bookings_data = self.booking_service.get_bookings_data()
-                json.dump(bookings_data, f, indent=2)
-        except:
-            pass
+        self.booking_service.save_to_file()
     
     def create_sample_rooms(self):
-        """Create sample rooms"""
         self.rooms = []
-        room_id = 1
+        room_counter = 101
         
-        for i in range(1, 11):
-            self.rooms.append(Room(
-                room_id=f"R{room_id:03d}",
-                room_number=100 + i,
-                room_type=RoomType.STANDARD,
-                floor=1,
-                base_price=100.0,
-                features=["WiFi", "TV", "Mini Bar"]
-            ))
-            room_id += 1
+        for floor in range(1, 4):
+            for _ in range(3):
+                self.rooms.append(Room(
+                    room_id=f"R{room_counter}",
+                    room_number=room_counter,
+                    room_type=RoomType.STANDARD,
+                    floor=floor,
+                    base_price=100.0,
+                    features=["WiFi", "TV"]
+                ))
+                room_counter += 1
         
-        for i in range(1, 9):
-            self.rooms.append(Room(
-                room_id=f"R{room_id:03d}",
-                room_number=200 + i,
-                room_type=RoomType.DELUXE,
-                floor=2,
-                base_price=150.0,
-                features=["WiFi", "TV", "Mini Bar", "Balcony"]
-            ))
-            room_id += 1
+        for floor in range(1, 4):
+            for _ in range(2):
+                self.rooms.append(Room(
+                    room_id=f"R{room_counter}",
+                    room_number=room_counter,
+                    room_type=RoomType.DELUXE,
+                    floor=floor,
+                    base_price=150.0,
+                    features=["WiFi", "TV", "Mini Bar", "Balcony"]
+                ))
+                room_counter += 1
         
-        for i in range(1, 6):
+        for floor in [3, 4]:
             self.rooms.append(Room(
-                room_id=f"R{room_id:03d}",
-                room_number=300 + i,
+                room_id=f"R{room_counter}",
+                room_number=room_counter,
                 room_type=RoomType.SUITE,
-                floor=3,
+                floor=floor,
                 base_price=250.0,
-                features=["WiFi", "TV", "Mini Bar", "Kitchen"]
+                features=["WiFi", "TV", "Mini Bar", "Balcony", "Living Room", "Jacuzzi"]
             ))
-            room_id += 1
+            room_counter += 1
         
         self.rooms.append(Room(
-            room_id=f"R{room_id:03d}",
-            room_number=401,
-            room_type=RoomType.PRESIDENTIAL,
-            floor=4,
+            room_id=f"R{room_counter}",
+            room_number=room_counter,
+            room_type=RoomType.PENTHOUSE,
+            floor=5,
             base_price=500.0,
-            features=["WiFi", "TV", "Mini Bar", "Pool"]
+            features=["WiFi", "TV", "Mini Bar", "Terrace", "Living Room", "Jacuzzi", "Kitchen", "Sea View"]
         ))
         
         self.save_data()
     
     def create_sample_guests(self):
-        """Create sample guests"""
         sample_guests = [
-            {"name": "John Doe", "email": "john@example.com", "phone": "+1234567890", "id_proof": "DL123456"},
-            {"name": "Jane Smith", "email": "jane@example.com", "phone": "+1234567891", "id_proof": "PP987654"},
-            {"name": "Bob Wilson", "email": "bob@example.com", "phone": "+1234567892", "id_proof": "DL789012"},
+            ("John Doe", "john@email.com", "1234567890", "ID001"),
+            ("Jane Smith", "jane@email.com", "0987654321", "ID002"),
+            ("Bob Wilson", "bob@email.com", "5555555555", "ID003"),
         ]
         
-        for guest_data in sample_guests:
+        for name, email, phone, id_proof in sample_guests:
             guest_id = f"G{self.guest_counter:04d}"
             self.guest_counter += 1
-            guest = Guest(
-                guest_id=guest_id,
-                name=guest_data["name"],
-                email=guest_data["email"],
-                phone=guest_data["phone"],
-                id_proof=guest_data["id_proof"]
-            )
+            
+            guest = Guest(guest_id, name, email, phone, id_proof)
             self.guests[guest_id] = guest
         
         self.save_data()
     
     def update_guest_combo(self):
-        """Update guest dropdown"""
         self.guest_combo.clear()
         for guest in self.guests.values():
             self.guest_combo.addItem(f"{guest.name} ({guest.guest_id})", guest.guest_id)
     
     def add_new_guest(self):
-        """Add new guest with modern dialog"""
         dialog = QDialog(self)
         dialog.setWindowTitle("✨ Add VIP Guest")
         dialog.setModal(True)
         dialog.setStyleSheet("""
             QDialog {
                 background: qlineargradient(x1:0, y1:0, x2:1, y2:1,
-                    stop:0 #667eea, stop:1 #764ba2);
+                    stop:0 #1a1a2e, stop:1 #0f3460);
             }
             QLabel {
                 color: white;
@@ -996,9 +1133,11 @@ class MainWindow(QMainWindow):
             }
             QLineEdit {
                 padding: 10px;
-                border: 2px solid white;
+                border: 2px solid rgba(102, 126, 234, 0.5);
                 border-radius: 8px;
                 font-size: 13px;
+                background-color: rgba(255, 255, 255, 0.1);
+                color: white;
             }
         """)
         
@@ -1037,13 +1176,11 @@ class MainWindow(QMainWindow):
             self.update_guests_table()
             self.save_data()
             
-            # Update stats
             self.stat_guests.update_value(len(self.guests))
             
             QMessageBox.information(self, "Success!", f"🎉 Guest {guest.name} added successfully!")
     
     def update_available_rooms(self):
-        """Update available rooms list"""
         self.available_rooms_list.clear()
         
         room_type = RoomType(self.room_type_combo.currentText())
@@ -1071,7 +1208,6 @@ class MainWindow(QMainWindow):
                 self.available_rooms_list.addItem(item)
     
     def calculate_price(self):
-        """Calculate price for selected room"""
         current_item = self.available_rooms_list.currentItem()
         if not current_item:
             return
@@ -1096,7 +1232,6 @@ class MainWindow(QMainWindow):
             self.price_label.setText(f"💰 ${price:.2f}")
     
     def create_booking(self):
-        """Create new booking with celebration"""
         try:
             guest_id = self.guest_combo.currentData()
             if not guest_id:
@@ -1126,14 +1261,12 @@ class MainWindow(QMainWindow):
             self.update_available_rooms()
             self.update_bookings_table()
             
-            # Update stats
             bookings = self.booking_service.get_all_bookings()
             active = sum(1 for b in bookings if b.status.value == "Confirmed")
             revenue = sum(b.total_price for b in bookings if b.status.value != "Cancelled")
             self.stat_bookings.update_value(active)
             self.stat_revenue.update_value(f"${revenue:.0f}")
             
-            # Update game score if playing
             if self.game_timer.isActive():
                 self.game_score += 1
                 self.update_score()
@@ -1148,7 +1281,6 @@ class MainWindow(QMainWindow):
             QMessageBox.critical(self, "Error", str(e))
     
     def update_bookings_table(self):
-        """Update bookings table"""
         bookings = self.booking_service.get_all_bookings()
         self.bookings_table.setRowCount(len(bookings))
         
@@ -1168,6 +1300,7 @@ class MainWindow(QMainWindow):
             self.bookings_table.setItem(i, 6, QTableWidgetItem(booking.status.value))
             
             btn_widget = QWidget()
+            btn_widget.setStyleSheet("background: transparent;")
             btn_layout = QHBoxLayout()
             btn_widget.setLayout(btn_layout)
             btn_layout.setContentsMargins(2, 2, 2, 2)
@@ -1182,7 +1315,6 @@ class MainWindow(QMainWindow):
         self.bookings_table.resizeColumnsToContents()
     
     def cancel_booking(self, booking_id):
-        """Cancel booking"""
         reply = QMessageBox.question(self, "Confirm Cancellation", 
             "Are you sure you want to cancel this booking?",
             QMessageBox.Yes | QMessageBox.No)
@@ -1194,7 +1326,6 @@ class MainWindow(QMainWindow):
                 self.update_bookings_table()
                 self.update_available_rooms()
                 
-                # Update stats
                 bookings = self.booking_service.get_all_bookings()
                 active = sum(1 for b in bookings if b.status.value == "Confirmed")
                 self.stat_bookings.update_value(active)
@@ -1204,7 +1335,6 @@ class MainWindow(QMainWindow):
                 QMessageBox.critical(self, "Error", str(e))
     
     def update_guests_table(self):
-        """Update guests table"""
         self.guests_table.setRowCount(len(self.guests))
         
         for i, guest in enumerate(self.guests.values()):
@@ -1218,7 +1348,6 @@ class MainWindow(QMainWindow):
         self.guests_table.resizeColumnsToContents()
     
     def update_rooms_table(self):
-        """Update rooms table"""
         self.rooms_table.setRowCount(len(self.rooms))
         
         for i, room in enumerate(self.rooms):
@@ -1232,7 +1361,6 @@ class MainWindow(QMainWindow):
         self.rooms_table.resizeColumnsToContents()
     
     def update_analytics(self):
-        """Update analytics display"""
         start_date = datetime.combine(self.analytics_start.date().toPyDate(), datetime.min.time())
         end_date = datetime.combine(self.analytics_end.date().toPyDate(), datetime.min.time())
         
@@ -1242,103 +1370,17 @@ class MainWindow(QMainWindow):
         stats = self.analytics_service.get_booking_stats()
         
         text = "<h1 style='color: #667eea;'>📊 Analytics Dashboard</h1>"
-        text += f"<p><b>Period:</b> {start_date.date()} to {end_date.date()}</p><hr>"
+        text += f"<p style='color: white;'><b>Period:</b> {start_date.date()} to {end_date.date()}</p><hr>"
         text += "<h2 style='color: #43e97b;'>💎 Key Metrics</h2>"
-        text += f"<p style='font-size: 18px;'>• <b>Occupancy Rate:</b> {occupancy:.1f}%</p>"
-        text += f"<p style='font-size: 18px;'>• <b>Total Revenue:</b> ${revenue:.2f}</p>"
-        text += f"<p style='font-size: 18px;'>• <b>Total Bookings:</b> {stats['total']}</p><hr>"
+        text += f"<p style='font-size: 18px; color: white;'>• <b>Occupancy Rate:</b> {occupancy:.1f}%</p>"
+        text += f"<p style='font-size: 18px; color: white;'>• <b>Total Revenue:</b> ${revenue:.2f}</p>"
+        text += f"<p style='font-size: 18px; color: white;'>• <b>Total Bookings:</b> {stats['total']}</p><hr>"
         text += "<h2 style='color: #f093fb;'>📋 Booking Status</h2>"
-        text += f"<p>• ✅ <b>Confirmed:</b> {stats['confirmed']}</p>"
-        text += f"<p>• 🏨 <b>Checked In:</b> {stats['checked_in']}</p>"
-        text += f"<p>• ❌ <b>Cancelled:</b> {stats['cancelled']}</p><hr>"
+        text += f"<p style='color: white;'>• ✅ <b>Confirmed:</b> {stats['confirmed']}</p>"
+        text += f"<p style='color: white;'>• 🏨 <b>Checked In:</b> {stats['checked_in']}</p>"
+        text += f"<p style='color: white;'>• ❌ <b>Cancelled:</b> {stats['cancelled']}</p><hr>"
         text += "<h2 style='color: #4facfe;'>🏠 Room Distribution</h2>"
         for room_type, count in room_dist.items():
-            text += f"<p>• <b>{room_type}:</b> {count} bookings</p>"
+            text += f"<p style='color: white;'>• <b>{room_type}:</b> {count} bookings</p>"
         
         self.analytics_text.setHtml(text)
-    
-    def create_visualization_tab(self):
-        """Keep the tree visualization tab from original"""
-        widget = QWidget()
-        layout = QVBoxLayout()
-        widget.setLayout(layout)
-        
-        header = QLabel("🌲 INTERVAL TREE VISUALIZATION")
-        header.setStyleSheet("""
-            font-size: 28px;
-            font-weight: bold;
-            color: white;
-            padding: 15px;
-        """)
-        layout.addWidget(header)
-        
-        card = GlassCard()
-        card_layout = QVBoxLayout()
-        card.setLayout(card_layout)
-        
-        info = QLabel("Select a room to visualize its interval tree structure")
-        info.setStyleSheet("font-size: 14px; padding: 10px;")
-        card_layout.addWidget(info)
-        
-        room_layout = QHBoxLayout()
-        room_layout.addWidget(QLabel("Select Room:"))
-        
-        self.viz_room_combo = QComboBox()
-        for room in self.rooms:
-            self.viz_room_combo.addItem(f"Room {room.room_number} ({room.room_type.value})", room.room_id)
-        room_layout.addWidget(self.viz_room_combo)
-        
-        viz_btn = ModernButton("🌲 Visualize", "#4facfe")
-        viz_btn.clicked.connect(self.show_tree_visualization)
-        room_layout.addWidget(viz_btn)
-        
-        room_layout.addStretch()
-        card_layout.addLayout(room_layout)
-        
-        self.tree_stats_text = QTextEdit()
-        self.tree_stats_text.setReadOnly(True)
-        self.tree_stats_text.setMaximumHeight(200)
-        card_layout.addWidget(self.tree_stats_text)
-        
-        layout.addWidget(card)
-        layout.addStretch()
-        
-        self.update_tree_stats()
-        
-        return widget
-    
-    def show_tree_visualization(self):
-        """Show tree visualization"""
-        try:
-            from ui.tree_visualization import TreeVisualizationDialog
-            
-            room_id = self.viz_room_combo.currentData()
-            
-            if room_id not in self.booking_service.room_trees:
-                QMessageBox.information(self, "No Data", "No bookings for this room yet!")
-                return
-            
-            tree = self.booking_service.room_trees[room_id]
-            
-            if tree.size == 0:
-                QMessageBox.information(self, "Empty", "This room's tree is empty!")
-                return
-            
-            dialog = TreeVisualizationDialog(tree, room_id, self)
-            dialog.exec_()
-        except Exception as e:
-            QMessageBox.warning(self, "Error", f"Could not visualize tree: {e}")
-    
-    def update_tree_stats(self):
-        """Update tree statistics"""
-        total_bookings = len(self.booking_service.get_all_bookings())
-        active_bookings = sum(1 for b in self.booking_service.get_all_bookings() if b.status.value != "Cancelled")
-        num_trees = len(self.booking_service.room_trees)
-        
-        stats = "<h3>Interval Tree Statistics</h3>"
-        stats += f"<p>• <b>Total Bookings:</b> {total_bookings}</p>"
-        stats += f"<p>• <b>Active Bookings:</b> {active_bookings}</p>"
-        stats += f"<p>• <b>Active Trees:</b> {num_trees}</p>"
-        stats += f"<p>• <b>Avg Tree Size:</b> {active_bookings / num_trees if num_trees > 0 else 0:.1f}</p>"
-        
-        self.tree_stats_text.setHtml(stats)
